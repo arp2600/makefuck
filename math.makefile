@@ -1,5 +1,11 @@
 include assert.makefile
 
+define IS_EQUAL
+$(if $(2),\
+$(if $(filter-out $(1),$(2)),\
+,TRUE),)
+endef
+
 # Increment unsigned value
 define MATH_INCREMENT_UVALUE
 $(strip\
@@ -95,3 +101,4 @@ decrement_value:
 	$(call ASSERT_EQ,-1,$(call DECREMENT_VALUE,0))
 	$(call ASSERT_EQ,-2,$(call DECREMENT_VALUE,-1))
 	$(call ASSERT_EQ,-10,$(call DECREMENT_VALUE,-9))
+
