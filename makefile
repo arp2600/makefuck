@@ -1,7 +1,9 @@
 default:
-	@echo "Please specify a target"
+	$(call RUN_PROGRAM)
+	@(echo )
 
 include math.makefile
+include program.makefile
 
 tests: math_tests
 	@echo "all tests passed"
@@ -39,12 +41,18 @@ $(if $(filter-out [,$(1)),\
 $(if $(filter-out ],$(1)),,\
 $(call MAYBE_JUMP_BACKWARD)),\
 $(call MAYBE_JUMP_FORWARD)),\
-$(info run $(COMMA))),\
+$(call READ_INPUT)),\
 $(call PRINT_BYTE)),\
 $(call DECREMENT_STACK_VALUE)),\
 $(call INCREMENT_STACK_VALUE)),\
 $(call DECREMENT_STACK_COUNTER)),\
 $(call INCREMENT_STACK_COUNTER))
+endef
+
+define READ_INPUT
+$(eval INPUT := $(shell ./echoin))\
+$(info read $(INPUT) from stdin)\
+$(eval PROGRAM_STACK := $(call SET_STACK_ELEMENT,$(PROGRAM_STACK_COUNTER),$(INPUT),$(PROGRAM_STACK)))
 endef
 
 define MAYBE_JUMP_FORWARD
@@ -121,15 +129,8 @@ $(call SET_STACK_ELEMENT_LOOP)\
 ,)
 endef
 
-PROGRAM := ++.>+++++.<[->+<].>.
 PROGRAM := $(call SPACE_PROGRAM_STRING,$(PROGRAM))
 PROGRAM_COUNTER := 1
 PROGRAM_STACK := 0
 PROGRAM_STACK_COUNTER := 1
-
-scratch:
-	$(call RUN_PROGRAM)
-	$(info stack dump:)
-	$(info $(PROGRAM_STACK))
-	@echo scratch
 
