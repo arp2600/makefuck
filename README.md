@@ -1,3 +1,6 @@
+Brainfuck interpreter written with makefiles.
+This serves no useful purpose, I just wanted to push what you could do with make.
+
 To run
 
     make
